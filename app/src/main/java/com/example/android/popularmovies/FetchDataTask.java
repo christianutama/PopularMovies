@@ -40,7 +40,7 @@ public class FetchDataTask extends AsyncTask<String, Void, Void> {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
 
-        String dataJsonStr = null;
+        String dataJsonStr;
         ArrayList<String[]> result = null;
 
         final String BASE_API = "http://api.themoviedb.org/3/discover/movie?";
@@ -207,16 +207,20 @@ public class FetchDataTask extends AsyncTask<String, Void, Void> {
                 return null;
             }
             String linkJSON = buffer.toString();
-            Log.v("JSON", linkJSON);
+//            Log.v("JSON", linkJSON);
             JSONObject jsonObject = new JSONObject(linkJSON);
             JSONArray results = jsonObject.getJSONArray("results");
+            Log.w("length of res", String.valueOf(results.length()));
+            if (results.length() != 0) {
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject currentObject = results.getJSONObject(i);
+//              Log.w("wth is this", currentObject.getString("key"));
+                    link = link + currentObject.getString("key") + "|";
+                }
+            } else {link = "null";}
 
-            for (int i = 0; i < results.length(); i++){
-                JSONObject currentObject = results.getJSONObject(i);
-                link = link + currentObject.getString("key") + "|";
-            }
 
-//            Log.v("Trailer string", link);
+            Log.w("Trailer string", link);
 //            String[] parts = link.split(Pattern.quote("|"));
 //
 //            for (int i = 0; i < parts.length; i++){
