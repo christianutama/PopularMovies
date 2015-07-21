@@ -1,6 +1,7 @@
 package com.example.android.popularmovies;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -45,9 +46,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private static final int LOADER_ID = 9;
     private Button addToFavorites;
     private Cursor cursor;
-    private ListView trailer;
     private String[] trailerLink;
-    private ArrayAdapter<String> mAdapter;
     private LinearLayout dynamicLinearLayout;
 
     @Override
@@ -75,7 +74,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         rating = (TextView) rootView.findViewById(R.id.rating_text_view);
         date = (TextView) rootView.findViewById(R.id.date_text_view);
 
-        trailer = (ListView) rootView.findViewById(R.id.trailer_list_view);
         dynamicLinearLayout = (LinearLayout) rootView.findViewById(R.id.linear_layout_dynamic);
 //        trailer.setVisibility(View.GONE);
 
@@ -121,23 +119,37 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         rating.setText(data.getString(MainActivityFragment.COL_RATING));
         date.setText(data.getString(MainActivityFragment.COL_DATE));
         String trailerString = data.getString(MainActivityFragment.COL_TRAILER);
+
+        if (trailerString.equals("null")){
+            return;
+        }
+
         trailerLink = trailerString.split(Pattern.quote("|"));
 
         for (int i = 0; i < trailerLink.length; i++){
             Log.v("parts parts parts", trailerLink[i]);
-            AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
-            TextView textView = new TextView(getActivity());
+            layoutParams.setMargins(0, 10, 0, 10);
+            final TextView textView = new TextView(getActivity());
             textView.setLayoutParams(layoutParams);
-            textView.setText(trailerLink[i]);
+            textView.setBackground(getResources().getDrawable(R.drawable.touch_selector));
+            final String currentLink = trailerLink[i];
+            textView.setText("Play trailer no. " +  (i+1));
+            textView.setClickable(true);
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String uriString = "http://www.youtube.com/watch";
+                    Uri uri = Uri.parse(uriString).buildUpon()
+                            .appendQueryParameter("v", currentLink)
+                            .build();
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+            });
             dynamicLinearLayout.addView(textView);
         }
-
-        mAdapter = new PerformanceArrayAdapter(getActivity(), trailerLink);
-        Log.v("GETITEM", mAdapter.getItem(0));
-        Log.v("GETITEM 2", mAdapter.getItem(1));
-        trailer.setAdapter(mAdapter);
-
 
     }
 
