@@ -10,6 +10,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -120,35 +121,49 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         date.setText(data.getString(MainActivityFragment.COL_DATE));
         String trailerString = data.getString(MainActivityFragment.COL_TRAILER);
 
+        float scale = getResources().getDisplayMetrics().density;
         if (trailerString.equals("null")){
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            TextView textView = new TextView(getActivity());
+            textView.setLayoutParams(layoutParams);
+            int paddingInPx = Utility.convertDpToPx(8, scale);
+            textView.setPadding(0, paddingInPx, 0, paddingInPx);
+            textView.setGravity(Gravity.CENTER);
+            textView.setText("No trailer available");
+            dynamicLinearLayout.addView(textView);
             return;
         }
 
         trailerLink = trailerString.split(Pattern.quote("|"));
 
-        for (int i = 0; i < trailerLink.length; i++){
-            Log.v("parts parts parts", trailerLink[i]);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0, 10, 0, 10);
-            final TextView textView = new TextView(getActivity());
-            textView.setLayoutParams(layoutParams);
-            textView.setBackground(getResources().getDrawable(R.drawable.touch_selector));
-            final String currentLink = trailerLink[i];
-            textView.setText("Play trailer no. " +  (i+1));
-            textView.setClickable(true);
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String uriString = "http://www.youtube.com/watch";
-                    Uri uri = Uri.parse(uriString).buildUpon()
-                            .appendQueryParameter("v", currentLink)
-                            .build();
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
-                }
-            });
-            dynamicLinearLayout.addView(textView);
+        if (dynamicLinearLayout.getChildCount() == 0) {
+            for (int i = 0; i < trailerLink.length; i++) {
+//            Log.v("parts parts parts", trailerLink[i]);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                TextView textView = new TextView(getActivity());
+                textView.setLayoutParams(layoutParams);
+                int paddingInPx = Utility.convertDpToPx(8, scale);
+                textView.setPadding(0, paddingInPx, 0, paddingInPx);
+                textView.setGravity(Gravity.CENTER);
+                textView.setBackground(getResources().getDrawable(R.drawable.touch_selector));
+                final String currentLink = trailerLink[i];
+                textView.setText("Play trailer no. " + (i + 1));
+                textView.setClickable(true);
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String uriString = "http://www.youtube.com/watch";
+                        Uri uri = Uri.parse(uriString).buildUpon()
+                                .appendQueryParameter("v", currentLink)
+                                .build();
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                });
+                dynamicLinearLayout.addView(textView);
+            }
         }
 
     }

@@ -44,7 +44,6 @@ import java.util.ArrayList;
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     public GridView gridView;
-
     private final String POPULAR_TAG = "popularity.desc";
     private final String RATING_TAG = "vote_average.desc";
 //    public ArrayList<String[]> store = null;

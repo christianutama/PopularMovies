@@ -144,7 +144,7 @@ public class FetchDataTask extends AsyncTask<String, Void, Void> {
         deleted = mContext.getContentResolver().delete(MovieContract.MoviesEntry.CONTENT_URI,
                 null,
                 null);
-        Log.v("Deleted", deleted + " entries");
+//        Log.v("Deleted", deleted + " entries");
 
         int inserted = 0;
         if (contentValuesVector.size() > 0){
@@ -153,7 +153,7 @@ public class FetchDataTask extends AsyncTask<String, Void, Void> {
             inserted = mContext.getContentResolver().bulkInsert(MovieContract.MoviesEntry.CONTENT_URI, values);
         }
 
-        Log.v("Inserted", inserted + " entries");
+//        Log.v("Inserted", inserted + " entries");
 
 //        for (String type:ITERATE){
 //            String[] retValue = new String[resultsArray.length()];
@@ -210,7 +210,7 @@ public class FetchDataTask extends AsyncTask<String, Void, Void> {
 //            Log.v("JSON", linkJSON);
             JSONObject jsonObject = new JSONObject(linkJSON);
             JSONArray results = jsonObject.getJSONArray("results");
-            Log.w("length of res", String.valueOf(results.length()));
+//            Log.w("length of res", String.valueOf(results.length()));
             if (results.length() != 0) {
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject currentObject = results.getJSONObject(i);
@@ -220,7 +220,7 @@ public class FetchDataTask extends AsyncTask<String, Void, Void> {
             } else {link = "null";}
 
 
-            Log.w("Trailer string", link);
+//            Log.w("Trailer string", link);
 //            String[] parts = link.split(Pattern.quote("|"));
 //
 //            for (int i = 0; i < parts.length; i++){
