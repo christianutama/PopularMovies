@@ -178,7 +178,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         if (!cursor.moveToFirst()){
             return;
         }
-        Toast.makeText(getActivity(), "ADD? Y U DO DIS", Toast.LENGTH_LONG).show();
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(MovieContract.MoviesEntry.COL_ID, cursor.getString(MainActivityFragment.COL_ID));
         contentValues.put(MovieContract.MoviesEntry.COL_TITLE, cursor.getString(MainActivityFragment.COL_TITLE));

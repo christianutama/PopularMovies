@@ -117,8 +117,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-                Log.v("Clicked", "item at " + cursor.getString(_ID));
-                Toast.makeText(getActivity(), String.valueOf(id), Toast.LENGTH_LONG).show();
+//                Log.v("Clicked", "item at " + cursor.getString(_ID));
+//                Toast.makeText(getActivity(), String.valueOf(id), Toast.LENGTH_LONG).show();
                 Uri uri;
                 if (isInFavorites){
                     uri = MovieContract.MoviesEntry.buildFavoritesUri(id);
