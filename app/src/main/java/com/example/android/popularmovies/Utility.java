@@ -12,4 +12,9 @@ public class Utility {
         return dpInPx;
     }
 
+    public static int convertSpToPx(int sp, float scale){
+        int spInPx = (int) (sp * scale);
+        return spInPx;
+    }
+
 }
